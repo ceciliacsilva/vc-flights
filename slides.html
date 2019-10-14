@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title><code>Flights</code></title>
+<meta name="author" content="((link (:type mailto :path cecilia.carneiroesilva@gmail.com :format bracket :raw-link mailto:cecilia.carneiroesilva@gmail.com :application nil :search-option nil :begin 1 :end 70 :contents-begin 44 :contents-end 68 :post-blank 0 :parent #0) Cecília Carneiro e Silva))"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/css/theme/night.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/npm/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title"><code>Flights</code></h1><h2 class="author"><a href="mailto:cecilia.carneiroesilva@gmail.com">Cecília Carneiro e Silva</a></h2><h2 class="date">15/10/2019</h2>
+</section>
+
+<section>
+<section id="slide-orgfa419e3">
+<h2 id="orgfa419e3">Base de Dados</h2>
+<p>
+Informações sobre os <b>voos comerciais</b> norte americanos no ano de <b>2008</b>.
+</p>
+
+<p>
+<b>56 atributos (colunas)</b>.
+</p>
+
+<p>
+<b>7 milhões de linhas</b>.
+</p>
+
+</section>
+<section id="slide-org8a14df4">
+<h3 id="org8a14df4">Atributos</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Duração do voo</td>
+</tr>
+
+<tr>
+<td class="org-left">Distância</td>
+</tr>
+
+<tr>
+<td class="org-left">Origem e destino</td>
+</tr>
+
+<tr>
+<td class="org-left">Atraso chegada e atraso partida</td>
+</tr>
+
+<tr>
+<td class="org-left">Informações sobre as aeronaves</td>
+</tr>
+
+<tr>
+<td class="org-left">etc</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org0a38da2">
+<h3 id="org0a38da2">Dados</h3>
+<p>
+<b>Dados publicos</b> e muito <b>divulgados</b>.
+</p>
+
+<p>
+Base (consideravelmente) <b>grande</b>.
+</p>
+
+<p>
+Diversos dados <b>nulos</b>.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org551a041">
+<h2 id="org551a041"><a href="https://www.omnisci.com/">OmniSci</a></h2>
+
+<div class="figure">
+<p><img src="./images/omnisci-initialPage.png" alt="omnisci-initialPage.png" />
+</p>
+</div>
+
+<p>
+<i>Hardware Accelerated DB</i> (GPU).
+</p>
+
+</section>
+<section id="slide-org4691a9e">
+<h3 id="org4691a9e"></h3>
+<p>
+<b>Escalabilidade</b> e <b>performance</b> para lidar com Big Data.
+</p>
+
+<p>
+<b>GPU-accelerated analytics database (<i>NVIDIA friendly</i>)</b>.
+</p>
+
+
+</section>
+<section id="slide-orgb6a96d5">
+<h3 id="orgb6a96d5">Arquitetura</h3>
+
+<div class="figure">
+<p><img src="./images/omnisci.png" alt="omnisci.png" />
+</p>
+</div>
+
+<p>
+<b>SQL engine, Vega Rendering Engine, Visualization System</b>.
+</p>
+
+</section>
+<section id="slide-org0b9edd5">
+<h3 id="org0b9edd5"><a href="https://www.omnisci.com/platform/omniscidb">OmniSciDB</a></h3>
+<p>
+<b>Open-source</b>.
+</p>
+
+<p>
+SQL nativo. <i>Query JIT compilation</i>.
+</p>
+
+<p>
+<i>Column Oriented</i> e vetorização de queries.
+</p>
+
+<p>
+<b>Gerenciamento avançado</b> de <b>memória</b> (arquitetura de memória GPU).
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org668a109">
+<h2 id="org668a109"><a href="https://vega.github.io/vega/">Vega</a></h2>
+
+<div class="figure">
+<p><img src="./images/vega-js.png" alt="vega-js.png" />
+</p>
+</div>
+
+<p>
+<b><a href="https://github.com/jheer">Jeffrey Heer</a></b>. Universidade de Washington.
+</p>
+
+</section>
+<section id="slide-orgfca3cb9">
+<h3 id="orgfca3cb9"></h3>
+<p>
+Abstração de <b>declarativa</b> (<b>reativa</b>) sobre bibliotecas imperativas, como <a href="https://d3js.org/">D3.js</a>.
+</p>
+
+<p>
+<i>Vega, Vega-lite, Altair</i>.
+</p>
+
+<p>
+<b>JSON</b>: <b>aparência visual</b> e <b>comportamentos interativos</b>.
+</p>
+
+<p>
+<a href="https://vega.github.io/editor/#/custom/vega">Vega-Editor</a>
+</p>
+
+</section>
+<section id="slide-orgd3d3500">
+<h3 id="orgd3d3500">DSL</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Propriedades Básicas (tamanho).</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>Dados</b> a serem visualizados.</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>Eixos</b> e <b>legendas</b>.</td>
+</tr>
+
+<tr>
+<td class="org-left">Projeções cartográficas.</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>Marcações Gráficas</b>.</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org884728d">
+<h3 id="org884728d">Vega Spec</h3>
+<div class="org-src-container">
+
+<pre  class="src src-js"><code trim><span style="color: #AE81FF;">{</span>
+  <span style="color: #E6DB74;">"$schema"</span>: <span style="color: #E6DB74;">"https://vega.github.io/schema/vega/v5.json"</span>,
+  <span style="color: #E6DB74;">"width"</span>: <span style="color: #AE81FF;">400</span>,
+  <span style="color: #E6DB74;">"height"</span>: <span style="color: #AE81FF;">200</span>,
+
+  <span style="color: #E6DB74;">"data"</span>: <span style="color: #66D9EF;">[]</span>,
+  <span style="color: #E6DB74;">"signals"</span>: <span style="color: #66D9EF;">[]</span>,
+  <span style="color: #E6DB74;">"scales"</span>: <span style="color: #66D9EF;">[]</span>,
+  <span style="color: #E6DB74;">"axes"</span>: <span style="color: #66D9EF;">[]</span>,
+  <span style="color: #E6DB74;">"marks"</span>: <span style="color: #66D9EF;">[]</span>
+<span style="color: #AE81FF;">}</span>
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+Data: pode ser direto, url, csv, json&#x2026;
+Scale: usa as escalas da d3.
+Axes: eixos.
+marks: primitivas geometrias usadas para codificar os dados.
+legendas e projeções eu deixei fora
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org6f5784c">
+<h2 id="org6f5784c">OmniSci + Vega</h2>
+<p>
+<a href="https://github.com/omnisci/mapd-connector">MapD connector</a>.
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-js"><code trim><span style="color: #F92672;">const</span> <span style="color: #FD971F;">connection</span> = <span style="color: #F92672;">new</span> <span style="color: #AE81FF;">(</span>window as any<span style="color: #AE81FF;">)</span>.MapdCon<span style="color: #AE81FF;">()</span>
+    .protocol<span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"http"</span><span style="color: #AE81FF;">)</span>
+    .host<span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"localhost"</span><span style="color: #AE81FF;">)</span>
+    .port<span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"6278"</span><span style="color: #AE81FF;">)</span>
+    .dbName<span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"omnisci"</span><span style="color: #AE81FF;">)</span>
+    .user<span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"admin"</span><span style="color: #AE81FF;">)</span>
+    .password<span style="color: #AE81FF;">(</span><span style="color: #E6DB74;">"**"</span><span style="color: #AE81FF;">)</span>;
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+cria uma conecao usando o connector mapD.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org720f251">
+<h3 id="org720f251">OmniSci + Vega</h3>
+<p>
+<a href="https://github.com/omnisci/vega-transform-omnisci-core">Vega Transform OmniSci Core</a>.
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-js"><code trim><span style="color: #F92672;">const</span> <span style="color: #FD971F;">result</span> = <span style="color: #F92672;">await</span> QueryCore._session.queryAsync<span style="color: #AE81FF;">(</span>_.query<span style="color: #AE81FF;">)</span>;
+
+result.forEach<span style="color: #AE81FF;">(</span>ingest<span style="color: #AE81FF;">)</span>;
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org614b6b8">
+<h3 id="org614b6b8">Renderização</h3>
+<div class="org-src-container">
+
+<pre  class="src src-js"><code trim>connection.connectAsync<span style="color: #AE81FF;">()</span>.then<span style="color: #AE81FF;">(</span>session =&gt; <span style="color: #66D9EF;">{</span>
+    QueryCore.session<span style="color: #A6E22E;">(</span>session<span style="color: #A6E22E;">)</span>;
+    <span style="color: #A6E22E;">(</span>vega as any<span style="color: #A6E22E;">)</span>.transforms<span style="color: #A6E22E;">[</span><span style="color: #E6DB74;">"querycore"</span><span style="color: #A6E22E;">]</span> = QueryCore;
+
+    <span style="color: #F92672;">const</span> <span style="color: #FD971F;">runtime</span> = vega.parse<span style="color: #A6E22E;">(</span>spec<span style="color: #A6E22E;">)</span>;
+    <span style="color: #F92672;">const</span> <span style="color: #FD971F;">view</span> = <span style="color: #F92672;">new</span> <span style="color: #66D9EF;">vega.View</span><span style="color: #A6E22E;">(</span>runtime<span style="color: #A6E22E;">)</span>
+        .logLevel<span style="color: #A6E22E;">(</span>vega.Info<span style="color: #A6E22E;">)</span>
+        .renderer<span style="color: #A6E22E;">(</span><span style="color: #E6DB74;">"svg"</span><span style="color: #A6E22E;">)</span>
+        .initialize<span style="color: #A6E22E;">(</span>document.querySelector<span style="color: #E6DB74;">(</span><span style="color: #E6DB74;">"#view"</span><span style="color: #E6DB74;">)</span><span style="color: #A6E22E;">)</span>;
+
+    view.runAsync<span style="color: #A6E22E;">()</span>;
+<span style="color: #66D9EF;">}</span><span style="color: #AE81FF;">)</span>;
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org9949f98">
+<h2 id="org9949f98">Objetivos visualização</h2>
+<div class="outline-text-2" id="text-org9949f98">
+</div>
+</section>
+<section id="slide-orgab82d33">
+<h3 id="orgab82d33"></h3>
+<p>
+Como o <b>tráfego aéreo</b> está <b>distribuídos</b> nos aeroportos? 
+</p>
+
+<p>
+<b>Uniformemente</b>? 
+</p>
+
+<p>
+Ou <b>majoritariamente dominado</b> por alguns terminais? 
+</p>
+
+<p>
+Quais <b>estados</b> possuem maior tráfego aéreo?
+</p>
+
+</section>
+<section id="slide-org46c99b4">
+<h3 id="org46c99b4"></h3>
+<p>
+Qual é o <b>comportamento temporal</b>, ao longo dos dias e meses, de uma série de informações: <b>tempo de atraso, quantidade de partidas e decolagem, tempo de voo</b>.
+</p>
+
+</section>
+<section id="slide-org24f747f">
+<h3 id="org24f747f"></h3>
+<p>
+Como se comportam <b>atributos</b> como: <b>tempo de atraso</b> e <b>distância percorrida</b> (tempo de voo), há alguma correlação entre os mesmos?
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org0138973">
+<h2 id="org0138973">Layout</h2>
+<div class="outline-text-2" id="text-org0138973">
+</div>
+</section>
+<section id="slide-orgbfddbac" data-background="./images/vc-visualizacaoDados.png" data-background-size="1000px">
+<h3 id="orgbfddbac"></h3>
+<p>
+<a href="http://localhost:1234/">Demo</a>
+</p>
+
+<aside class="notes">
+<p>
+nao vou mostar as queries e tabelas.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb245d79">
+<h2 id="orgb245d79">Mapa</h2>
+<div style="font-size: 60%;">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">x</th>
+<th scope="col" class="org-right">y</th>
+<th scope="col" class="org-right">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">215</td>
+<td class="org-right">132</td>
+<td class="org-right">10087</td>
+</tr>
+
+<tr>
+<td class="org-right">295</td>
+<td class="org-right">169</td>
+<td class="org-right">65795</td>
+</tr>
+
+<tr>
+<td class="org-right">187</td>
+<td class="org-right">39</td>
+<td class="org-right">1464</td>
+</tr>
+
+<tr>
+<td class="org-right">291</td>
+<td class="org-right">125</td>
+<td class="org-right">2117</td>
+</tr>
+
+<tr>
+<td class="org-right">82</td>
+<td class="org-right">212</td>
+<td class="org-right">708</td>
+</tr>
+
+<tr>
+<td class="org-right">332</td>
+<td class="org-right">131</td>
+<td class="org-right">6406</td>
+</tr>
+
+<tr>
+<td class="org-right">277</td>
+<td class="org-right">101</td>
+<td class="org-right">414513</td>
+</tr>
+
+<tr>
+<td class="org-right">191</td>
+<td class="org-right">164</td>
+<td class="org-right">3037</td>
+</tr>
+
+<tr>
+<td class="org-right">253</td>
+<td class="org-right">174</td>
+<td class="org-right">350380</td>
+</tr>
+
+<tr>
+<td class="org-right">280</td>
+<td class="org-right">119</td>
+<td class="org-right">14004</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="slide-org157f409">
+<h3 id="org157f409">Mapa</h3>
+
+<div class="figure">
+<p><img src="./images/vc-mapa.png" alt="vc-mapa.png" />
+</p>
+</div>
+
+<p>
+Bem distribuído. 
+</p>
+
+<p>
+<b>Mapa</b> = dados contextualizados. 
+</p>
+
+<aside class="notes">
+<p>
+mais claro maior
+tamanho maior maior
+o mapa não é completamente desenhado mas a (percepção) gestalt nos faz enxergar o mapa completo.
+Alguns mais tem um trafego maior mas acho que se fizessemos um para o brasil seria bem diferente.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc04715e">
+<h2 id="orgc04715e">Coordenadas paralelas</h2>
+<div style="font-size: 60%;">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">flight-month</th>
+<th scope="col" class="org-right">distance</th>
+<th scope="col" class="org-right">airtime</th>
+<th scope="col" class="org-right">delay</th>
+<th scope="col" class="org-left">carrier-name</th>
+<th scope="col" class="org-right">plane-year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">2454</td>
+<td class="org-right">339</td>
+<td class="org-right">-1</td>
+<td class="org-left">Delta Air Lines</td>
+<td class="org-right">1957</td>
+</tr>
+
+<tr>
+<td class="org-right">12</td>
+<td class="org-right">383</td>
+<td class="org-right">70</td>
+<td class="org-right">-18</td>
+<td class="org-left">Northwest Airlines</td>
+<td class="org-right">1969</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">814</td>
+<td class="org-right">120</td>
+<td class="org-right">44</td>
+<td class="org-left">Northwest Airlines</td>
+<td class="org-right">1975</td>
+</tr>
+
+<tr>
+<td class="org-right">11</td>
+<td class="org-right">231</td>
+<td class="org-right">39</td>
+<td class="org-right">63</td>
+<td class="org-left">Northwest Airlines</td>
+<td class="org-right">1979</td>
+</tr>
+
+<tr>
+<td class="org-right">12</td>
+<td class="org-right">432</td>
+<td class="org-right">59</td>
+<td class="org-right">-38</td>
+<td class="org-left">Northwest Airlines</td>
+<td class="org-right">1980</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-right">887</td>
+<td class="org-right">118</td>
+<td class="org-right">-24</td>
+<td class="org-left">American Airlines</td>
+<td class="org-right">1984</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">920</td>
+<td class="org-right">140</td>
+<td class="org-right">2</td>
+<td class="org-left">Southwest Airlines</td>
+<td class="org-right">1985</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-right">632</td>
+<td class="org-right">99</td>
+<td class="org-right">-1</td>
+<td class="org-left">Northwest Airlines</td>
+<td class="org-right">1986</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+<td class="org-right">965</td>
+<td class="org-right">136</td>
+<td class="org-right">3</td>
+<td class="org-left">Continental Air Lines</td>
+<td class="org-right">1986</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-right">258</td>
+<td class="org-right">46</td>
+<td class="org-right">-8</td>
+<td class="org-left">American Airlines</td>
+<td class="org-right">1986</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="slide-orgd1bca5c">
+<h3 id="orgd1bca5c">Coordenadas paralelas</h3>
+
+<div class="figure">
+<p><img src="./images/vc-coordenadasParalelas.png" alt="vc-coordenadasParalelas.png" />
+</p>
+</div>
+
+<p>
+Correlações (<b>ou não</b>) entre os atributos.
+</p>
+
+<aside class="notes">
+<p>
+Onde as interações fazem mais falta no meu layout.
+Se fosse para carros seria bem diferente. Serve para confirmar algumas suposições.
+Tempo e distancia são proporcionais.
+Tempo de vida parece nao influenciar.
+Regime de voo (distancia-tempo) não parece dependente do mês do ano.
+Ponderar que isso é uma amostragem.
+Todos os dados seria inviável.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org9d613f9">
+<h2 id="org9d613f9">Gráfico de barras</h2>
+<div style="font-size: 60%;">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">category</th>
+<th scope="col" class="org-right">amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">CA</td>
+<td class="org-right">1649194</td>
+</tr>
+
+<tr>
+<td class="org-left">TX</td>
+<td class="org-right">1495300</td>
+</tr>
+
+<tr>
+<td class="org-left">FL</td>
+<td class="org-right">933996</td>
+</tr>
+
+<tr>
+<td class="org-left">IL</td>
+<td class="org-right">922474</td>
+</tr>
+
+<tr>
+<td class="org-left">GA</td>
+<td class="org-right">871562</td>
+</tr>
+
+<tr>
+<td class="org-left">NY</td>
+<td class="org-right">662666</td>
+</tr>
+
+<tr>
+<td class="org-left">CO</td>
+<td class="org-right">561710</td>
+</tr>
+
+<tr>
+<td class="org-left">AZ</td>
+<td class="org-right">463622</td>
+</tr>
+
+<tr>
+<td class="org-left">NC</td>
+<td class="org-right">423640</td>
+</tr>
+
+<tr>
+<td class="org-left">VA</td>
+<td class="org-right">421404</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="slide-orgca3037e">
+<h3 id="orgca3037e">Gráfico de barras</h3>
+
+<div class="figure">
+<p><img src="./images/vc-barChart.png" alt="vc-barChart.png" />
+</p>
+</div>
+
+<p>
+<b>Estados</b> com <b>maior</b> tráfego aéreo.
+</p>
+
+<aside class="notes">
+<p>
+complementar ao mapa.
+Mostrando mais uma vez a distribuição.
+duplicado&#x2026; Soma as linhas origem e destino.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org7e6ea94">
+<h2 id="org7e6ea94">Gráfico de linhas</h2>
+<div style="font-size: 60%;">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">category</th>
+<th scope="col" class="org-right">amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">566</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">428</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">429</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-right">420</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-right">460</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-right">397</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+<td class="org-right">392</td>
+</tr>
+
+<tr>
+<td class="org-right">8</td>
+<td class="org-right">357</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-right">366</td>
+</tr>
+
+<tr>
+<td class="org-right">10</td>
+<td class="org-right">427</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="slide-org98d66be">
+<h3 id="org98d66be">Gráfico de linhas</h3>
+
+<div class="figure">
+<p><img src="./images/vc-linesChart.png" alt="vc-linesChart.png" />
+</p>
+</div>
+
+<p>
+<b>Horário de partida</b> dos voos.
+</p>
+
+<aside class="notes">
+<p>
+Se tds os voos sairem no mesmo dia seria assim a situação.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org38195ed">
+<h2 id="org38195ed">Heat Map</h2>
+<div style="font-size: 60%;">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">temp</th>
+<th scope="col" class="org-right">flight-dayofmonth</th>
+<th scope="col" class="org-right">flight-month</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">19.01395373799173</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">22.16528885192976</td>
+<td class="org-right">2</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">16.11230573746457</td>
+<td class="org-right">3</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">13.75858134920635</td>
+<td class="org-right">4</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">17.38641912223925</td>
+<td class="org-right">5</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">16.82242115124388</td>
+<td class="org-right">6</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">12.06601578308377</td>
+<td class="org-right">7</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">10.48508437385716</td>
+<td class="org-right">8</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">4.608085172041352</td>
+<td class="org-right">9</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">7.445702264075336</td>
+<td class="org-right">10</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="slide-org7460f19">
+<h3 id="org7460f19">Heat Map</h3>
+
+<div class="figure">
+<p><img src="./images/vc-mapaCalor.png" alt="vc-mapaCalor.png" />
+</p>
+</div>
+
+<p>
+Atrasos no fim do ano.
+</p>
+
+<aside class="notes">
+<p>
+Influencia dos feriados natalinos e das nevadas (tempo).
+Poderia colocar em versões futuras o (weather-delay).
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orge97b28f">
+<h2 id="orge97b28f">Scatter plot</h2>
+<div style="font-size: 60%;">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">arrdelay</th>
+<th scope="col" class="org-right">depdelay</th>
+<th scope="col" class="org-right">airtime</th>
+<th scope="col" class="org-left">category</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">19</td>
+<td class="org-right">113</td>
+<td class="org-left">Southwest Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">-20</td>
+<td class="org-right">-5</td>
+<td class="org-right">143</td>
+<td class="org-left">Southwest Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-right">-4</td>
+<td class="org-right">93</td>
+<td class="org-left">Expressjet Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">66</td>
+<td class="org-right">75</td>
+<td class="org-right">48</td>
+<td class="org-left">Mesa Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">-15</td>
+<td class="org-right">-9</td>
+<td class="org-right">57</td>
+<td class="org-left">Skywest Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">-16</td>
+<td class="org-right">-3</td>
+<td class="org-right">108</td>
+<td class="org-left">United Air Lines</td>
+</tr>
+
+<tr>
+<td class="org-right">-25</td>
+<td class="org-right">0</td>
+<td class="org-right">49</td>
+<td class="org-left">Atlantic Southeast Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">26</td>
+<td class="org-right">46</td>
+<td class="org-right">155</td>
+<td class="org-left">American Eagle Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">24</td>
+<td class="org-right">4</td>
+<td class="org-right">331</td>
+<td class="org-left">American Airlines</td>
+</tr>
+
+<tr>
+<td class="org-right">-12</td>
+<td class="org-right">-1</td>
+<td class="org-right">126</td>
+<td class="org-left">American Airlines</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</section>
+<section id="slide-orgb2ff74c">
+<h3 id="orgb2ff74c">Scatter plot</h3>
+
+<div class="figure">
+<p><img src="./images/vc-scatterPlot.png" alt="vc-scatterPlot.png" />
+</p>
+</div>
+
+<p>
+<b><i>Delays</i> x tempo de voo x companhias aéreas</b>.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org709a65a">
+<h2 id="org709a65a">Considerações Finais</h2>
+<p>
+<b>Diversos</b> layouts (ao invés de focar em um super interativo).
+</p>
+
+<p>
+As <b>interações são limitadas</b> por enquanto.
+</p>
+
+</section>
+<section id="slide-org8ea4b20">
+<h3 id="org8ea4b20">Trabalhos futuros</h3>
+<p>
+Poderia usar técnicas similares com outro backend. (<code>Comparações</code> <code>possíveis</code>).
+</p>
+
+<p>
+Segunda <b>versão</b> mais <b>incrementada</b> para o <b>trabalho final</b>.
+</p>
+
+<p>
+<b>Dados mais desafiadores</b>.
+</p>
+
+<aside class="notes">
+<p>
+Se encaixam melhor na minha linha de pesquisa.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgab09d07">
+<h2 id="orgab09d07">The End</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

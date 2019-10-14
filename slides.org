@@ -1,0 +1,382 @@
+#+REVEAL_TRANS: linear    
+#+REVEAL_THEME: night
+#+OPTIONS: num:nil toc:nil timestamp:nil 
+#+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+Title: ~Flights~
+# #+Author: Cecília Carneiro e Silva
+#+Author: [[mailto:cecilia.carneiroesilva@gmail.com][Cecília Carneiro e Silva]]
+#+Date: 15/10/2019
+
+* Base de Dados
+
+Informações sobre os *voos comerciais* norte americanos no ano de *2008*.
+
+*56 atributos (colunas)*.
+
+*7 milhões de linhas*.
+
+** Atributos
+
+| Duração do voo                  |
+| Distância                       |
+| Origem e destino                |
+| Atraso chegada e atraso partida |
+| Informações sobre as aeronaves  |
+| etc                             |
+
+** Dados
+
+*Dados publicos* e muito *divulgados*.
+
+Base (consideravelmente) *grande*.
+
+Diversos dados *nulos*.
+
+* [[https://www.omnisci.com/][OmniSci]]
+
+[[./images/omnisci-initialPage.png]]
+
+/Hardware Accelerated DB/ (GPU).
+
+** 
+
+*Escalabilidade* e *performance* para lidar com Big Data.
+
+*GPU-accelerated analytics database (/NVIDIA friendly/)*.
+
+
+** Arquitetura
+
+[[./images/omnisci.png]]
+
+*SQL engine, Vega Rendering Engine, Visualization System*.
+
+** [[https://www.omnisci.com/platform/omniscidb][OmniSciDB]]
+
+*Open-source*.
+
+SQL nativo. /Query JIT compilation/.
+
+/Column Oriented/ e vetorização de queries.
+
+*Gerenciamento avançado* de *memória* (arquitetura de memória GPU).
+
+* [[https://vega.github.io/vega/][Vega]]
+
+[[./images/vega-js.png]]
+
+*[[https://github.com/jheer][Jeffrey Heer]]*. Universidade de Washington.
+
+** 
+
+Abstração de *declarativa* (*reativa*) sobre bibliotecas imperativas, como [[https://d3js.org/][D3.js]].
+
+/Vega, Vega-lite, Altair/.
+
+*JSON*: *aparência visual* e *comportamentos interativos*.
+
+[[https://vega.github.io/editor/#/custom/vega][Vega-Editor]]
+
+** DSL
+
+| Propriedades Básicas (tamanho). |
+| *Dados* a serem visualizados.   |
+| *Eixos* e *legendas*.           |
+| Projeções cartográficas.        |
+| *Marcações Gráficas*.           |
+
+** Vega Spec
+
+#+BEGIN_SRC js
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 400,
+  "height": 200,
+
+  "data": [],
+  "signals": [],
+  "scales": [],
+  "axes": [],
+  "marks": []
+}
+#+END_SRC
+
+#+BEGIN_NOTES
+Data: pode ser direto, url, csv, json...
+Scale: usa as escalas da d3.
+Axes: eixos.
+marks: primitivas geometrias usadas para codificar os dados.
+legendas e projeções eu deixei fora
+#+END_NOTES
+
+* OmniSci + Vega
+
+[[https://github.com/omnisci/mapd-connector][MapD connector]].
+
+#+BEGIN_SRC js
+const connection = new (window as any).MapdCon()
+    .protocol("http")
+    .host("localhost")
+    .port("6278")
+    .dbName("omnisci")
+    .user("admin")
+    .password("**");
+#+END_SRC
+
+#+BEGIN_NOTES 
+cria uma conecao usando o connector mapD.
+#+END_NOTES
+
+** OmniSci + Vega 
+
+[[https://github.com/omnisci/vega-transform-omnisci-core][Vega Transform OmniSci Core]].
+
+#+BEGIN_SRC js
+const result = await QueryCore._session.queryAsync(_.query);
+
+result.forEach(ingest);
+#+END_SRC
+
+** Renderização
+
+#+BEGIN_SRC js
+connection.connectAsync().then(session => {
+    QueryCore.session(session);
+    (vega as any).transforms["querycore"] = QueryCore;
+
+    const runtime = vega.parse(spec);
+    const view = new vega.View(runtime)
+        .logLevel(vega.Info)
+        .renderer("svg")
+        .initialize(document.querySelector("#view"));
+
+    view.runAsync();
+});
+#+END_SRC
+
+* Objetivos visualização
+
+** 
+
+Como o *tráfego aéreo* está *distribuídos* nos aeroportos? 
+
+*Uniformemente*? 
+
+Ou *majoritariamente dominado* por alguns terminais? 
+
+Quais *estados* possuem maior tráfego aéreo?
+
+** 
+
+Qual é o *comportamento temporal*, ao longo dos dias e meses, de uma série de informações: *tempo de atraso, quantidade de partidas e decolagem, tempo de voo*.
+
+** 
+
+Como se comportam *atributos* como: *tempo de atraso* e *distância percorrida* (tempo de voo), há alguma correlação entre os mesmos?
+
+* Layout
+** 
+ :PROPERTIES:
+    :reveal_background: ./images/vc-visualizacaoDados.png
+    :reveal_background_size: 1000px
+    :END:
+
+# [[./images/vc-visualizacaoDados.png]]
+[[http://localhost:1234/][Demo]]
+
+#+BEGIN_NOTES
+nao vou mostar as queries e tabelas.
+#+END_NOTES
+
+* Mapa
+
+#+REVEAL_HTML: <div style="font-size: 60%;">
+|   x |   y |    cnt |
+|-----+-----+--------|
+| 215 | 132 |  10087 |
+| 295 | 169 |  65795 |
+| 187 |  39 |   1464 |
+| 291 | 125 |   2117 |
+|  82 | 212 |    708 |
+| 332 | 131 |   6406 |
+| 277 | 101 | 414513 |
+| 191 | 164 |   3037 |
+| 253 | 174 | 350380 |
+| 280 | 119 |  14004 |
+|-----+-----+--------|
+#+REVEAL_HTML: </div>
+
+** Mapa
+
+[[./images/vc-mapa.png]]
+
+Bem distribuído. 
+
+*Mapa* = dados contextualizados. 
+
+#+BEGIN_NOTES
+mais claro maior
+tamanho maior maior
+o mapa não é completamente desenhado mas a (percepção) gestalt nos faz enxergar o mapa completo.
+Alguns mais tem um trafego maior mas acho que se fizessemos um para o brasil seria bem diferente.
+#+END_NOTES
+
+* Coordenadas paralelas
+
+#+REVEAL_HTML: <div style="font-size: 60%;">
+| flight-month | distance | airtime | delay | carrier-name          | plane-year |
+|--------------+----------+---------+-------+-----------------------+------------|
+|            4 |     2454 |     339 |    -1 | Delta Air Lines       |       1957 |
+|           12 |      383 |      70 |   -18 | Northwest Airlines    |       1969 |
+|            1 |      814 |     120 |    44 | Northwest Airlines    |       1975 |
+|           11 |      231 |      39 |    63 | Northwest Airlines    |       1979 |
+|           12 |      432 |      59 |   -38 | Northwest Airlines    |       1980 |
+|            9 |      887 |     118 |   -24 | American Airlines     |       1984 |
+|            1 |      920 |     140 |     2 | Southwest Airlines    |       1985 |
+|            5 |      632 |      99 |    -1 | Northwest Airlines    |       1986 |
+|            7 |      965 |     136 |     3 | Continental Air Lines |       1986 |
+|            9 |      258 |      46 |    -8 | American Airlines     |      1986  |
+|--------------+----------+---------+-------+-----------------------+------------|
+#+REVEAL_HTML: </div>
+
+** Coordenadas paralelas
+[[./images/vc-coordenadasParalelas.png]]
+
+Correlações (*ou não*) entre os atributos.
+
+#+BEGIN_NOTES
+Onde as interações fazem mais falta no meu layout.
+Se fosse para carros seria bem diferente. Serve para confirmar algumas suposições.
+Tempo e distancia são proporcionais.
+Tempo de vida parece nao influenciar.
+Regime de voo (distancia-tempo) não parece dependente do mês do ano.
+Ponderar que isso é uma amostragem.
+Todos os dados seria inviável.
+#+END_NOTES
+
+* Gráfico de barras
+
+#+REVEAL_HTML: <div style="font-size: 60%;">
+| category |  amount |
+|----------+---------|
+| CA       | 1649194 |
+| TX       | 1495300 |
+| FL       |  933996 |
+| IL       |  922474 |
+| GA       |  871562 |
+| NY       |  662666 |
+| CO       |  561710 |
+| AZ       |  463622 |
+| NC       |  423640 |
+| VA       |  421404 |
+|----------+---------|
+#+REVEAL_HTML: </div>
+
+** Gráfico de barras
+[[./images/vc-barChart.png]]
+
+*Estados* com *maior* tráfego aéreo.
+
+#+BEGIN_NOTES
+complementar ao mapa.
+Mostrando mais uma vez a distribuição.
+duplicado... Soma as linhas origem e destino.
+#+END_NOTES
+
+* Gráfico de linhas
+
+#+REVEAL_HTML: <div style="font-size: 60%;">
+| category | amount |
+|----------+--------|
+|        1 |    566 |
+|        2 |    428 |
+|        3 |    429 |
+|        4 |    420 |
+|        5 |    460 |
+|        6 |    397 |
+|        7 |    392 |
+|        8 |    357 |
+|        9 |    366 |
+|       10 |    427 |
+|----------+--------|
+#+REVEAL_HTML: </div>
+
+** Gráfico de linhas
+[[./images/vc-linesChart.png]]
+
+*Horário de partida* dos voos.
+
+#+BEGIN_NOTES
+Se tds os voos sairem no mesmo dia seria assim a situação.
+#+END_NOTES
+
+* Heat Map
+
+#+REVEAL_HTML: <div style="font-size: 60%;">
+|              temp | flight-dayofmonth | flight-month |
+|-------------------+-------------------+--------------|
+| 19.01395373799173 |                 1 |            0 |
+| 22.16528885192976 |                 2 |            0 |
+| 16.11230573746457 |                 3 |            0 |
+| 13.75858134920635 |                 4 |            0 |
+| 17.38641912223925 |                 5 |            0 |
+| 16.82242115124388 |                 6 |            0 |
+| 12.06601578308377 |                 7 |            0 |
+| 10.48508437385716 |                 8 |            0 |
+| 4.608085172041352 |                 9 |            0 |
+| 7.445702264075336 |                10 |            0 |
+|-------------------+-------------------+--------------|
+#+REVEAL_HTML: </div>
+
+** Heat Map
+[[./images/vc-mapaCalor.png]]
+
+Atrasos no fim do ano.
+
+#+BEGIN_NOTES
+Influencia dos feriados natalinos e das nevadas (tempo).
+Poderia colocar em versões futuras o (weather-delay).
+#+END_NOTES
+
+* Scatter plot
+
+#+REVEAL_HTML: <div style="font-size: 60%;">
+| arrdelay | depdelay | airtime | category                    |
+|----------+----------+---------+-----------------------------|
+|        2 |       19 |     113 | Southwest Airlines          |
+|      -20 |       -5 |     143 | Southwest Airlines          |
+|        9 |       -4 |      93 | Expressjet Airlines         |
+|       66 |       75 |      48 | Mesa Airlines               |
+|      -15 |       -9 |      57 | Skywest Airlines            |
+|      -16 |       -3 |     108 | United Air Lines            |
+|      -25 |        0 |      49 | Atlantic Southeast Airlines |
+|       26 |       46 |     155 | American Eagle Airlines     |
+|       24 |        4 |     331 | American Airlines           |
+|      -12 |       -1 |     126 | American Airlines           |
+|----------+----------+---------+-----------------------------|
+#+REVEAL_HTML: </div>
+
+** Scatter plot
+[[./images/vc-scatterPlot.png]]
+
+*/Delays/ x tempo de voo x companhias aéreas*.
+
+* Considerações Finais
+
+*Diversos* layouts (ao invés de focar em um super interativo).
+
+As *interações são limitadas* por enquanto.
+
+** Trabalhos futuros
+
+Poderia usar técnicas similares com outro backend. (~Comparações~ ~possíveis~).
+
+Segunda *versão* mais *incrementada* para o *trabalho final*.
+
+*Dados mais desafiadores*.
+
+#+BEGIN_NOTES
+Se encaixam melhor na minha linha de pesquisa.
+#+END_NOTES
+
+* The End
