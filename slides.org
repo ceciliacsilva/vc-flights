@@ -205,6 +205,74 @@ nao vou mostar as queries e tabelas.
 | 280 | 119 |  14004 |
 |-----+-----+--------|
 #+REVEAL_HTML: </div>
+** Spec
+
+#+REVEAL_HTML: <div style="font-size: 60%;">
+#+BEGIN_SRC js
+  {
+      ...,
+      "data": [
+          {
+              "name": "heatmap_query",
+              "transform": [query_hexagonal_map]
+          },
+          {
+              "name": "heatmap_stats",
+              "source": "heatmap_query",
+              "transform": [
+                  {
+                      "type": "aggregate",
+                      "fields": ["cnt", "cnt"],
+                      "ops":    ["min", "max"],
+                      "as":     ["mincnt", "maxcnt"]
+                  }
+              ]
+          }
+      ],
+      "scales": [
+          {
+              "name": "xscale",
+              "type": "linear",
+              "domain": {"data": "map_size", "fields": ["minx", "maxx"]},
+              "range": "width"
+          },
+          {
+              "name": "heat_color",
+              "type": "pow",
+              "domain": {"data": "heatmap_stats", "fields": ["mincnt", "maxcnt"]},
+              "range": { "scheme": "blues" },
+              "reverse": true
+          }
+      ],
+      "marks": [
+          {
+              "type": "symbol",
+              "from": {
+                  "data": "heatmap_query"
+              },
+              "encode": {
+                  "update": {
+                      "shape": { "value": "circle" },
+                      "xc": {
+                          "scale": "xscale",
+                          "field": "x"
+                      },
+                      "yc": {
+                          "scale": "yscale",
+                          "field": "y"
+                      },
+                      "size": { "scale": "heat_size", "field": "cnt" },
+                      "fill": {
+                          "scale": "heat_color",
+                          "field": "cnt"
+                      }
+                  }
+              }
+          }
+      ]
+  }
+#+END_SRC
+#+REVEAL_HTML: </div>
 
 ** Mapa
 
@@ -380,3 +448,7 @@ Se encaixam melhor na minha linha de pesquisa.
 #+END_NOTES
 
 * The End
+
+[[https://github.com/ceciliacsilva/mapd-app][Github]]
+
+[[https://ceciliacsilva.github.io/vc-flights/][Apresentação]]
